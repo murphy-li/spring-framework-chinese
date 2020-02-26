@@ -956,7 +956,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * 所有bean定义都将被加载，但尚未实例化任何bean。 
 	 * 这允许在某些ApplicationContext实现中注册特殊的BeanPostProcessor等。 
 	 *  
-	 * @param  beanFactory应用程序上下文使用的bean工厂
+	 * @param  beanFactory 应用程序上下文使用的bean工厂
 	 */
 	protected void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 	}
