@@ -73,7 +73,7 @@ public class AnnotatedGenericBeanDefinition extends GenericBeanDefinition implem
 	/**
 	 * 为给定的bean类创建一个新的AnnotatedGenericBeanDefinition。 
 	 *  
-	 * @param  beanClass加载的bean类
+	 * @param  beanClass 加载的bean类
 	 */
 	public AnnotatedGenericBeanDefinition(Class<?> beanClass) {
 		setBeanClass(beanClass);
@@ -92,9 +92,8 @@ public class AnnotatedGenericBeanDefinition extends GenericBeanDefinition implem
 	 */
 	/**
 	 * 为给定的注释元数据创建一个新的AnnotatedGenericBeanDefinition，从而允许基于ASM的处理并避免过早加载bean类。 
-	 * 请注意，此构造函数在功能上等效于{@link  org.springframework.context.annotation.ScannedGenericBeanDefinition ScannedGenericBeanDefinition}，但是后者的语义表明，是通过组件扫描而非其他方式专门发现了bean。 
-	 *  
-	 * @param 元数据从3.1.1开始的有关豆类的注释元数据
+	 * 请注意，此构造函数在功能上等效于{@link  org.springframework.context.annotation.ScannedGenericBeanDefinition ScannedGenericBeanDefinition}，但是后者的语义表明，是通过组件扫描而非其他方式专门发现了bean。
+	 * @param 元数据 从3.1.1开始的有关豆类的注释元数据
 	 */
 	public AnnotatedGenericBeanDefinition(AnnotationMetadata metadata) {
 		Assert.notNull(metadata, "AnnotationMetadata must not be null");
@@ -117,7 +116,7 @@ public class AnnotatedGenericBeanDefinition extends GenericBeanDefinition implem
 	/**
 	 * 基于带注释的类和该类上的工厂方法，为给定的注释元数据创建一个新的AnnotatedGenericBeanDefinition。 
 	 *  
-	 * @param 元数据所讨论的bean类的注释元数据
+	 * @param 元数据 所讨论的bean类的注释元数据
 	 * @param 所选工厂方法@4.1.1起的factoryMethodMetadata元数据
 	 */
 	public AnnotatedGenericBeanDefinition(AnnotationMetadata metadata, MethodMetadata factoryMethodMetadata) {

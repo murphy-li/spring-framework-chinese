@@ -483,11 +483,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getBean(Class<T> requiredType, @Nullable Object... args) throws BeansException {
+		// 2. 断言requiredType不是null
 		Assert.notNull(requiredType, "Required type must not be null");
+		// 3. 获得bean
 		Object resolved = resolveBean(ResolvableType.forRawClass(requiredType), args, false);
+		// 4. 如果resolved为空，就直接抛出找不到bean的异常
 		if (resolved == null) {
 			throw new NoSuchBeanDefinitionException(requiredType);
 		}
+		// 5. 强制转换Object类型到T类型，然后返回
 		return (T) resolved;
 	}
 

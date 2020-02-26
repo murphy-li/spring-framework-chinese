@@ -88,7 +88,8 @@ class ConditionEvaluator {
 	/**
 	 * 根据{@code  @Conditional}注解确定是否应跳过项目。 
 	 *  {@link  ConfigurationPhase}将根据项目的类型推导（即{@code  @Configuration}类将是{@link  ConfigurationPhase＃PARSE_CONFIGURATION}）
-	 * @param 元数据元数据<@返回>是否应跳过该项目
+	 * @param metadata 元数据
+	 * @return 是否应跳过该项目
 	 */
 	public boolean shouldSkip(AnnotatedTypeMetadata metadata) {
 		return shouldSkip(metadata, null);

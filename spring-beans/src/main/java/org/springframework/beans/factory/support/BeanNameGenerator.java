@@ -48,10 +48,10 @@ public interface BeanNameGenerator {
 	 * @return the generated bean name
 	 */
 	/**
-	 * 为给定的bean定义生成一个bean名称。 
-	 *  
-	 * @param 定义Bean定义以为
-	 * @param 注册表生成名称Bean定义注册表应使用给定的名称注册@<return>生成的Bean名称
+	 * 为给定的bean定义生成一个bean名称。
+	 * @param definition Bean定义以为
+	 * @param registry 生成名称Bean定义注册表应使用给定的名称注册
+	 * @return生成的Bean名称
 	 */
 	String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry);
 

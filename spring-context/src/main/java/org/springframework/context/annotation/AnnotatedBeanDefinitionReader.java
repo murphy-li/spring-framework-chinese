@@ -357,10 +357,10 @@ public class AnnotatedBeanDefinitionReader {
 	 * 从给定的bean类中注册一个bean，并从类声明的注解中派生其元数据。 
 	 *  
 	 * @param  beanClass Bean的类
-	 * @param 为Bean 
-	 * @param 限定符指定一个明确的名称除了Bean类级别的限定符之外，还要考虑特定的限定符注解
-	 * @param 供应商a用于创建bean实例的回调（可以为{@code  null}）
-	 * @param 定制程序一个或多个用于定制工厂的{@link  BeanDefinition}的回调，例如从5.0开始设置lazy-init或primary标志
+	 * @param name 显式bean的名字
+	 * @param qualifiers 除了bean类级别的限定符之外，还需要考虑的特定限定符注释（如果有）
+	 * @param supplier 用于创建bean实例的回调（可以为{@code  null}）
+	 * @param customizers 定制程序一个或多个用于定制工厂的{@link  BeanDefinition}的回调，例如从5.0开始设置lazy-init或primary标志
 	 */
 	private <T> void doRegisterBean(Class<T> beanClass, @Nullable String name,
 			@Nullable Class<? extends Annotation>[] qualifiers, @Nullable Supplier<T> supplier,

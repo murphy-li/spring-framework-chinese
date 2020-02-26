@@ -216,11 +216,10 @@ public abstract class BeanDefinitionReaderUtils {
 	 * @throws BeanDefinitionStoreException if registration failed
 	 */
 	/**
-	 * 向给定的bean工厂注册给定的bean定义。 
-	 *  
-	 * @param 定义保持bean定义（包括名称和别名）
-	 * @param 注册bean工厂以便在注册失败时向
-	 * @throws  BeanDefinitionStoreException注册
+	 * 向给定的bean工厂注册给定的bean定义。
+	 * @param definitionHolder bean定义（包括名称和别名）
+	 * @param registry bean工厂注册地
+	 * @throws  BeanDefinitionStoreException 如果注册失败
 	 */
 	public static void registerBeanDefinition(
 			BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry)
