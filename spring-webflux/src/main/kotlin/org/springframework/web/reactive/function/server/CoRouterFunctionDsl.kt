@@ -821,7 +821,7 @@ class CoRouterFunctionDsl internal constructor (private val init: (CoRouterFunct
 	/**
 	 * 将外部定义的路由器功能合并到这一功能中。 
 	 *  
-	 * @param  routerFunction自5.2起开始添加的路由器功能
+	 * @param  routerFunction 自5.2起开始添加的路由器功能
 	 */
 	fun add(routerFunction: RouterFunction<ServerResponse>) {
 		builder.add(routerFunction)
@@ -879,7 +879,7 @@ class CoRouterFunctionDsl internal constructor (private val init: (CoRouterFunct
 	 * 使用给定的响应处理功能过滤此构建器创建的所有路由的响应对象。 
 	 * 过滤器通常用于解决跨领域的问题，例如日志记录，安全性等。 
 	 * 
-	 * @param  responseProcessor一个自5.2起转换响应的函数
+	 * @param  responseProcessor 一个自5.2起转换响应的函数
 	 */
 	fun after(responseProcessor: (ServerRequest, ServerResponse) -> ServerResponse) {
 		builder.after(responseProcessor)
@@ -896,7 +896,7 @@ class CoRouterFunctionDsl internal constructor (private val init: (CoRouterFunct
 	 * 通过应用给定的响应提供程序功能，筛选与谓词匹配的所有异常。 
 	 *  
 	 * @param 声明要过滤的异常类型
-	 * @param  responseProvider一个自5.2起创建响应的函数
+	 * @param  responseProvider 一个自5.2起创建响应的函数
 	 */
 	fun onError(predicate: (Throwable) -> Boolean, responseProvider: suspend (Throwable, ServerRequest) -> ServerResponse) {
 		builder.onError(predicate) { throwable, request ->
@@ -915,7 +915,7 @@ class CoRouterFunctionDsl internal constructor (private val init: (CoRouterFunct
 	 * 通过应用给定的响应提供程序功能，筛选与谓词匹配的所有异常。 
 	 *  
 	 * @param  E要过滤的异常类型
-	 * @param  responseProvider一个自5.2起创建响应的函数
+	 * @param  responseProvider 一个自5.2起创建响应的函数
 	 */
 	inline fun <reified E : Throwable> onError(noinline responseProvider: suspend (Throwable, ServerRequest) -> ServerResponse) {
 		builder.onError({it is E}) { throwable, request ->
