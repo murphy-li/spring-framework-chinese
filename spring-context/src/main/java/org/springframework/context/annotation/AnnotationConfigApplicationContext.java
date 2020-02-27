@@ -122,7 +122,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 		this();
+		logger.info("注册传入的@Configuration对应的clazz AnnotationConfigApplicationContext#register()");
 		register(componentClasses);
+		logger.info("刷新容器 AnnotationConfigApplicationContext#refresh()");
 		refresh();
 	}
 
