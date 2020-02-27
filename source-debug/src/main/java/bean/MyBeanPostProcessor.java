@@ -7,6 +7,8 @@ package bean; /**
   * @author  17326 @日期2020/2/27 10:43
   */
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,11 @@ import org.springframework.stereotype.Component;
 public class MyBeanPostProcessor implements BeanPostProcessor {
 
 	/**
+	 * 记录器可用于子类。
+	 *
+	 */
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	/**
 	 * 实例化、依赖注入完毕，在调用显示的初始化之前完成一些定制的初始化任务
 	 * 注意：方法返回值不能为null
 	 * 如果返回null那么在后续初始化方法将报空指针异常或者通过getBean()方法获取不到bena实例对象
@@ -29,7 +36,7 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 	 */
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		System.out.println("初始化 before--实例化的bean对象:"+bean+"\t"+beanName);
+		logger.debug("初始化 before--实例化的bean对象:"+bean+"\t"+beanName);
 		// 可以根据beanName不同执行不同的处理操作
 		return bean;
 	}
@@ -42,7 +49,7 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 	 */
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		System.out.println("初始化 after...实例化的bean对象:"+bean+"\t"+beanName);
+		logger.debug("初始化 after...实例化的bean对象:"+bean+"\t"+beanName);
 		// 可以根据beanName不同执行不同的处理操作
 		return bean;
 	}
