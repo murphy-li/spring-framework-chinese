@@ -95,6 +95,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.CompositeIterator;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import printer.DebugPrinter;
 
 /**
  * Spring's default implementation of the {@link ConfigurableListableBeanFactory}
@@ -151,6 +152,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	static {
 		try {
+			DebugPrinter.log("注入ProviderClass");
 			javaxInjectProviderClass =
 					ClassUtils.forName("javax.inject.Provider", DefaultListableBeanFactory.class.getClassLoader());
 		}
@@ -872,6 +874,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	@Override
 	public void registerResolvableDependency(Class<?> dependencyType, @Nullable Object autowiredValue) {
+		DebugPrinter.log("将" + dependencyType + "的自动装配值注册为：" + autowiredValue);
 		Assert.notNull(dependencyType, "Dependency type must not be null");
 		if (autowiredValue != null) {
 			if (!(autowiredValue instanceof ObjectFactory || dependencyType.isInstance(autowiredValue))) {

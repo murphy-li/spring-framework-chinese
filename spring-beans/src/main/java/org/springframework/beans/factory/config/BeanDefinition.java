@@ -231,11 +231,11 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * Return whether this bean should be lazily initialized, i.e. not
-	 * eagerly instantiated on startup. Only applicable to a singleton bean.
+	 * eagerly instantiated on startup. Only applicable to a singleton.
 	 */
 	/**
 	 * 返回此bean是否应延迟初始化，即不要在启动时急于实例化。 
-	 * 仅适用于单例豆。 
+	 * 仅适用于单例bean。
 	 * 
 	 */
 	boolean isLazyInit();
@@ -246,8 +246,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 */
 	/**
 	 * 设置该bean依赖于初始化的bean的名称。 
-	 *  Bean工厂将确保首先初始化这些Bean。 
-	 * 
+	 *  Bean工厂将确保首先初始化这些Bean。
 	 */
 	void setDependsOn(@Nullable String... dependsOn);
 
@@ -255,8 +254,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Return the bean names that this bean depends on.
 	 */
 	/**
-	 * 返回此bean依赖的bean名称。 
-	 * 
+	 * 返回此bean依赖的bean名称。
 	 */
 	@Nullable
 	String[] getDependsOn();
@@ -270,10 +268,9 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 */
 	/**
 	 * 设置此bean是否适合自动连接到其他bean。 
-	 *  <p>请注意，此标志旨在仅影响基于类型的自动装配。 
-	 * 它不会影响名称的显式引用，即使指定的bean未标记为自动装配候选者，名称也将得到解析。 
-	 * 因此，如果名称匹配，按名称自动装配仍将注入Bean。 
-	 * 
+	 *  <p>请注意，此标志旨在仅影响type-based(基于类型的)的自动装配（autowiring）。
+	 * 它不会影响按name的显式引用，如果指定的bean未标记为autowire候选也可以被解析。
+	 * 因此，如果名称匹配，按名称自动装配仍将注入Bean。
 	 */
 	void setAutowireCandidate(boolean autowireCandidate);
 
@@ -281,8 +278,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Return whether this bean is a candidate for getting autowired into some other bean.
 	 */
 	/**
-	 * 返回此bean是否适合自动连接到其他bean。 
-	 * 
+	 * 返回此bean是否适合自动连接到其他bean。
 	 */
 	boolean isAutowireCandidate();
 
@@ -293,8 +289,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 */
 	/**
 	 * 设置此bean是否为自动装配的主要候选对象。 
-	 *  <p>如果对于多个匹配候选对象中的一个bean，此值为{@code  true}，则它将作为平局。 
-	 * 
+	 *  <p>如果对于多个匹配候选对象中的一个bean，此值为{@code  true}，则它将作为平局。
 	 */
 	void setPrimary(boolean primary);
 
@@ -302,8 +297,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Return whether this bean is a primary autowire candidate.
 	 */
 	/**
-	 * 返回此Bean是否为自动装配的主要候选对象。 
-	 * 
+	 * 返回此Bean是否为自动装配的主要候选对象。
 	 */
 	boolean isPrimary();
 
@@ -313,7 +307,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * @see #setFactoryMethodName
 	 */
 	/**
-	 * 指定要使用的工厂bean（如果有）。 
+	 * 指定要使用的 factory bean（如果有）。
 	 * 这是用于调用指定工厂方法的bean的名称。 
 	 *  
 	 * @see  #setFactoryMethodName
@@ -324,8 +318,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Return the factory bean name, if any.
 	 */
 	/**
-	 * 返回工厂bean名称（如果有）。 
-	 * 
+	 * 返回工厂bean名称（如果有）。
 	 */
 	@Nullable
 	String getFactoryBeanName();
@@ -341,7 +334,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	/**
 	 * 指定工厂方法（如果有）。 
 	 * 将使用构造函数参数调用此方法，如果未指定任何参数，则不使用任何参数。 
-	 * 该方法将在指定的工厂bean（如果有）上被调用，否则将作为本地bean类上的静态方法被调用。 
+	 * 该方法将在指定的factory bean（如果有）上被调用，否则将作为本地bean类上的静态方法被调用。
 	 *  
 	 * @see  #setFactoryBeanName 
 	 * @see  #setBeanClassName
@@ -352,8 +345,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Return a factory method, if any.
 	 */
 	/**
-	 * 返回工厂方法（如果有）。 
-	 * 
+	 * 返回工厂方法名（如果有）。
 	 */
 	@Nullable
 	String getFactoryMethodName();
@@ -377,7 +369,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 */
 	/**
 	 * 返回是否有为此bean定义的构造函数参数值。 
-	 *  @从5.0.2开始
+	 *  @since 5.0.2
 	 */
 	default boolean hasConstructorArgumentValues() {
 		return !getConstructorArgumentValues().isEmpty();
@@ -390,7 +382,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 */
 	/**
 	 * 返回要应用到Bean的新实例的属性值。 
-	 *  <p>可以在bean工厂后处理期间修改返回的实例。 
+	 *  <p>可以在bean factory post-processing修改返回的实例。
 	 *  
 	 * @return  MutablePropertyValues对象（从不{<@@code> null}）
 	 */
@@ -557,8 +549,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * Return whether this bean is "abstract", that is, not meant to be instantiated.
 	 */
 	/**
-	 * 返回此bean是否为"抽象"，即不打算实例化。 
-	 * 
+	 * 返回此bean是否为"抽象"，即不打算实例化。
 	 */
 	boolean isAbstract();
 

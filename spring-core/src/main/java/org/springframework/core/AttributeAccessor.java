@@ -55,8 +55,8 @@ public interface AttributeAccessor {
 	 * 如果{@code  value}为{@code  null}，则属性为{@link  #removeAttribute remove}。 
 	 *  <p>通常，用户应注意通过使用完全限定的名称（可能使用类或程序包名称作为前缀）来防止与其他元数据属性重叠。 
 	 *  
-	 * @param 命名唯一属性键
-	 * @param 值要附加的属性值
+	 * @param name 命名唯一属性键
+	 * @param value 要附加的属性值
 	 */
 	void setAttribute(String name, @Nullable Object value);
 
@@ -70,7 +70,7 @@ public interface AttributeAccessor {
 	 * 获取由{@code  name}标识的属性的值。 
 	 * 如果属性不存在，则返回{@code  null}。 
 	 *  
-	 * @param 命名唯一属性键
+	 * @param name 命名唯一属性键
 	 * @return 属性的当前值（如果有）
 	 */
 	@Nullable
@@ -86,7 +86,7 @@ public interface AttributeAccessor {
 	 * 删除由{@code  name}标识的属性，并返回其值。 
 	 * 如果未找到{@code  name}下的属性，则返回{@code  null}。 
 	 *  
-	 * @param 命名唯一属性键
+	 * @param name 命名唯一属性键
 	 * @return 属性的最后一个值（如果有）
 	 */
 	@Nullable
@@ -101,7 +101,7 @@ public interface AttributeAccessor {
 	 * 如果由{@code  name}标识的属性存在，则返回{@code  true}。 
 	 * 否则，返回{@code  false}。 
 	 *  
-	 * @param 命名唯一属性键
+	 * @param name 命名唯一属性键
 	 */
 	boolean hasAttribute(String name);
 

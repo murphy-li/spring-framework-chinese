@@ -35,6 +35,7 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import printer.DebugPrinter;
 
 /**
  * Standalone application context, accepting <em>component classes</em> as input &mdash;
@@ -90,6 +91,8 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * 
 	 */
 	public AnnotationConfigApplicationContext() {
+		super();
+		DebugPrinter.log("设置reader和scanner，前面super调用父类构造");
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
@@ -118,13 +121,14 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	/**
 	 * 创建一个新的AnnotationConfigApplicationContext，从给定的组件类派生bean定义并自动刷新上下文。 
 	 *  
-	 * @param  componentClasss一个或多个组件类-例如，{@link  Configuration @Configuration}类
+	 * @param componentClasses 一个或多个组件类-例如，{@link  Configuration @Configuration}类
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 		this();
-		logger.info("注册传入的@Configuration对应的clazz AnnotationConfigApplicationContext#register()");
+		DebugPrinter.log("注册传入的@Configuration对应的clazz");
+		// register(AppConfig.class); this.BeanDefinitionMap.put(beanName, beanDefinition);
 		register(componentClasses);
-		logger.info("刷新容器 AnnotationConfigApplicationContext#refresh()");
+		DebugPrinter.log("刷新容器");
 		refresh();
 	}
 
@@ -137,7 +141,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	/**
 	 * 创建一个新的AnnotationConfigApplicationContext，扫描给定包中的组件，为这些组件注册bean定义，并自动刷新上下文。 
 	 *  
-	 * @param  basePackages软件包以扫描组件类
+	 * @param basePackages 软件包以扫描组件类
 	 */
 	public AnnotationConfigApplicationContext(String... basePackages) {
 		this();
@@ -230,6 +234,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	@Override
 	public void register(Class<?>... componentClasses) {
+		DebugPrinter.log("调用reader注册");
 		Assert.notEmpty(componentClasses, "At least one component class must be specified");
 		this.reader.register(componentClasses);
 	}

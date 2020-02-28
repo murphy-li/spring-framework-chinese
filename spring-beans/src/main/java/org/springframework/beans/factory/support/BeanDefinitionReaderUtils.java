@@ -34,6 +34,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import printer.DebugPrinter;
 
 /**
  * Utility methods that are useful for bean definition reader implementations.
@@ -224,11 +225,12 @@ public abstract class BeanDefinitionReaderUtils {
 	public static void registerBeanDefinition(
 			BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry)
 			throws BeanDefinitionStoreException {
-
+		DebugPrinter.log("向给定的bean工厂注册给定的bean定义。");
 		// Register bean definition under primary name.
 		String beanName = definitionHolder.getBeanName();
 		registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
 
+		DebugPrinter.log("如果有别名则给这个beanName定义别名。");
 		// Register aliases for bean name, if any.
 		String[] aliases = definitionHolder.getAliases();
 		if (aliases != null) {

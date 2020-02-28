@@ -74,7 +74,6 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 	 */
 	/**
 	 * 创建一个新的BeanDefinitionHolder。 
-	 *  
 	 * @param  beanDefinition 要包装的BeanDefinition
 	 * @param  beanName bean名称，为bean定义指定的名称
 	 */
@@ -115,7 +114,7 @@ public class BeanDefinitionHolder implements BeanMetadataElement {
 	 *  <p>注意：包装好的BeanDefinition引用按原样使用； 
 	 *  {@code  not}深度复制。 
 	 *  
-	 * @param  beanDefinitionHolder要复制的BeanDefinitionHolder
+	 * @param  beanDefinitionHolder 要复制的BeanDefinitionHolder
 	 */
 	public BeanDefinitionHolder(BeanDefinitionHolder beanDefinitionHolder) {
 		Assert.notNull(beanDefinitionHolder, "BeanDefinitionHolder must not be null");

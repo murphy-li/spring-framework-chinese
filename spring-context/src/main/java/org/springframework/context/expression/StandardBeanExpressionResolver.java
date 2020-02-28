@@ -45,6 +45,7 @@ import org.springframework.expression.spel.support.StandardTypeLocator;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import printer.DebugPrinter;
 
 /**
  * Standard implementation of the
@@ -126,6 +127,7 @@ public class StandardBeanExpressionResolver implements BeanExpressionResolver {
 	 * @param  beanClassLoader工厂的bean类加载器
 	 */
 	public StandardBeanExpressionResolver(@Nullable ClassLoader beanClassLoader) {
+		DebugPrinter.log("使用ClassLoader构造ExpressionResolver");
 		this.expressionParser = new SpelExpressionParser(new SpelParserConfiguration(null, beanClassLoader));
 	}
 

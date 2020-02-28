@@ -2,9 +2,11 @@
 package bean;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.stereotype.Component;
+import printer.DebugPrinter;
 
 import java.util.Arrays;
 
@@ -20,11 +22,26 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		System.out.println("bean.MyBeanFactoryPostProcessor...postProcessBeanFactory...");
 		int count = beanFactory.getBeanDefinitionCount();
 		String[] names = beanFactory.getBeanDefinitionNames();
-		System.out.println("当前BeanFactory中有"+count+" 个Bean");
+		System.out.println("工厂后置处理器:当前BeanFactory中有"+count+" 个Bean");
 		System.out.println(Arrays.asList(names));
+		StringBuilder nameList = new StringBuilder();
+		for(String name :names){
+			nameList.append("  ").append(name);
+		}
+		DebugPrinter.log("工厂后置处理器:当前工厂有" + count + "个bean，名字分别是" + nameList.toString() );
+		BeanDefinition beanDefinition = beanFactory.getBeanDefinition("beanTest");
+		BeanTest bean = (BeanTest)beanFactory.getBean("beanTest");
+//		nameList = new StringBuilder();
+//		for(String name : names){
+//			nameList.append("  ").append(beanFactory.getBean(name));
+//		}
+//		DebugPrinter.log("工厂后置处理器:实例分别是：" + nameList);
 	}
 
+	@Override
+	public String toString() {
+		return "MyBeanFactoryPostProcessor{}";
+	}
 }

@@ -42,6 +42,7 @@ import org.springframework.core.env.EnvironmentCapable;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import printer.DebugPrinter;
 
 /**
  * Convenient adapter for programmatic registration of bean classes.
@@ -113,6 +114,7 @@ public class AnnotatedBeanDefinitionReader {
 	 *  @3.1起
 	 */
 	public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry, Environment environment) {
+		DebugPrinter.log("为给定的BeanDefinitionRegistry创建一个reader");
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
 		Assert.notNull(environment, "Environment must not be null");
 		this.registry = registry;
@@ -193,6 +195,7 @@ public class AnnotatedBeanDefinitionReader {
 	 */
 	public void register(Class<?>... componentClasses) {
 		for (Class<?> componentClass : componentClasses) {
+			DebugPrinter.log("开始注册");
 			registerBean(componentClass);
 		}
 	}
@@ -208,6 +211,7 @@ public class AnnotatedBeanDefinitionReader {
 	 * @param  beanClass bean的类
 	 */
 	public void registerBean(Class<?> beanClass) {
+		DebugPrinter.log("注册");
 		doRegisterBean(beanClass, null, null, null, null);
 	}
 
@@ -365,7 +369,7 @@ public class AnnotatedBeanDefinitionReader {
 	private <T> void doRegisterBean(Class<T> beanClass, @Nullable String name,
 			@Nullable Class<? extends Annotation>[] qualifiers, @Nullable Supplier<T> supplier,
 			@Nullable BeanDefinitionCustomizer[] customizers) {
-
+		DebugPrinter.log("用beanHolder持有BeanDefinition然后注册");
 		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(beanClass);
 		if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {
 			return;
@@ -374,8 +378,9 @@ public class AnnotatedBeanDefinitionReader {
 		abd.setInstanceSupplier(supplier);
 		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
 		abd.setScope(scopeMetadata.getScopeName());
+		DebugPrinter.log("根据元数据，设置bean的scope为：" + scopeMetadata.getScopeName());
 		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
-
+		DebugPrinter.log("根据元数据，设置bean的name为：" + beanName);
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
 		if (qualifiers != null) {
 			for (Class<? extends Annotation> qualifier : qualifiers) {
@@ -395,9 +400,10 @@ public class AnnotatedBeanDefinitionReader {
 				customizer.customize(abd);
 			}
 		}
-
+		DebugPrinter.log("BeanDefinitionHolder持有当前BeanDefinition， beanName为" + beanName);
 		BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
 		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
+		DebugPrinter.log("将BeanDefinitionHolder注册到注册地：" + this.registry);
 		BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);
 	}
 

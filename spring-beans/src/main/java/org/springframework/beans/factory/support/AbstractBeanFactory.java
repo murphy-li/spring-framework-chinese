@@ -87,6 +87,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
+import printer.DebugPrinter;
 
 /**
  * Abstract base class for {@link org.springframework.beans.factory.BeanFactory}
@@ -303,6 +304,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	@Override
 	public Object getBean(String name) throws BeansException {
+		DebugPrinter.log("获得bean：" + name);
 		return doGetBean(name, null, null, false);
 	}
 
@@ -369,8 +371,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		Object bean;
 
 		// Eagerly check singleton cache for manually registered singletons.
+		DebugPrinter.log("首先检查单例cache");
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
+			DebugPrinter.log("从cache获取失败");
 			if (logger.isTraceEnabled()) {
 				if (isSingletonCurrentlyInCreation(beanName)) {
 					logger.trace("Returning eagerly cached instance of singleton bean '" + beanName +
@@ -2158,16 +2162,17 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	/**
 	 * 获取给定bean实例的对象，如果是FactoryBean，则可以是bean实例本身或其创建的对象。 
 	 *  
-	 * @param  beanInstance共享bean实例的
-	 * @param 名称名称，可能包括工厂取消引用前缀
-	 * @param  beanName规范的bean名称
-	 * @param  mbd合并的bean定义
+	 * @param  beanInstance 共享bean实例的
+	 * @param name 可能包括工厂取消引用前缀的名称
+	 * @param  beanName 规范的bean名称
+	 * @param  mbd 合并的bean定义
 	 * @return 为bean公开的对象
 	 */
 	protected Object getObjectForBeanInstance(
 			Object beanInstance, String name, String beanName, @Nullable RootBeanDefinition mbd) {
 
 		// Don't let calling code try to dereference the factory if the bean isn't a factory.
+		DebugPrinter.log("不要让调用代码尝试取消工厂引用，如果bean不是工厂");
 		if (BeanFactoryUtils.isFactoryDereference(name)) {
 			if (beanInstance instanceof NullBean) {
 				return beanInstance;
@@ -2217,7 +2222,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	/**
 	 * 确定给定的Bean名称是否已在该工厂中使用，即是否存在以该名称注册的本地Bean或别名，或是否以此名称创建的内部Bean。 
 	 *  
-	 * @param  beanName要检查的名称
+	 * @param  beanName 要检查的名称
 	 */
 	public boolean isBeanNameInUse(String beanName) {
 		return isAlias(beanName) || containsLocalBean(beanName) || hasDependentBean(beanName);

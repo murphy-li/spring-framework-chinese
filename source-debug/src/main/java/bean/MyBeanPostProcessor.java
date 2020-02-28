@@ -8,11 +8,13 @@ package bean;
   * @author  17326 @日期2020/2/27 10:43
   */
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
+import printer.DebugPrinter;
+
+import java.util.logging.Logger;
 
 /**
  * 自定义BeanPostProcessor实现类
@@ -28,7 +30,7 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 	 * 记录器可用于子类。
 	 *
 	 */
-	private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = Logger.getLogger(getClass().getName());
 	/**
 	 * 实例化、依赖注入完毕，在调用显示的初始化之前完成一些定制的初始化任务
 	 * 注意：方法返回值不能为null
@@ -37,8 +39,7 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 	 */
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		logger.debug("初始化 before--实例化的bean对象:"+bean+"\t"+beanName);
-		// 可以根据beanName不同执行不同的处理操作
+		DebugPrinter.log("初始化实例之前的后置处理器，实例名：" + beanName + " 实例：" + bean);
 		return bean;
 	}
 
@@ -50,9 +51,7 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 	 */
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		logger.debug("初始化 after...实例化的bean对象:"+bean+"\t"+beanName);
-		// 可以根据beanName不同执行不同的处理操作
+		DebugPrinter.log("初始化实例之后的后置处理器，实例名：" + beanName + " 实例：" + bean);
 		return bean;
 	}
-
 }

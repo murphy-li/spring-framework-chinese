@@ -44,6 +44,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.PatternMatchUtils;
+import printer.DebugPrinter;
 
 /**
  * A bean definition scanner that detects bean candidates on the classpath,
@@ -224,14 +225,16 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 */
 	public ClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry, boolean useDefaultFilters,
 			Environment environment, @Nullable ResourceLoader resourceLoader) {
-
+		DebugPrinter.log("为给定的BeanDefinitionRegistry创建ClassPathBeanDefinitionScanner");
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
 		this.registry = registry;
 
 		if (useDefaultFilters) {
 			registerDefaultFilters();
 		}
+		DebugPrinter.log("设置环境为" + environment);
 		setEnvironment(environment);
+		DebugPrinter.log("设置resourceLoader为：" + resourceLoader);
 		setResourceLoader(resourceLoader);
 	}
 

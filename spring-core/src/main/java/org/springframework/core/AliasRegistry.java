@@ -61,11 +61,12 @@ public interface AliasRegistry {
 	 * @param alias the alias to remove
 	 * @throws IllegalStateException if no such alias was found
 	 */
+
 	/**
-	 * 从此注册表中删除指定的别名。 
-	 *  
-	 * @param 别名是别名，如果未找到
-	 * @throws  IllegalStateException，则将其删除
+	 * 从此注册表中删除指定的别名。
+	 *
+	 * @param alias 将要删除的别名
+	 * @throws  IllegalStateException 找不到别名
 	 */
 	void removeAlias(String alias);
 
