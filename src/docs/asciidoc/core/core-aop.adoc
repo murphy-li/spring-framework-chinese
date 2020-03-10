@@ -238,7 +238,7 @@ annotation, as the following example shows:
 ----
 	@Configuration
 	@EnableAspectJAutoProxy
-	public class AppConfig {
+	public class bean.AppConfig {
 
 	}
 ----
@@ -247,7 +247,7 @@ annotation, as the following example shows:
 ----
 	@Configuration
 	@EnableAspectJAutoProxy
-	class AppConfig
+	class bean.AppConfig
 ----
 
 [[aop-enable-aspectj-xml]]
@@ -3433,7 +3433,7 @@ use Java-based configuration, you can add `@EnableSpringConfigured` to any
 ----
 	@Configuration
 	@EnableSpringConfigured
-	public class AppConfig {
+	public class bean.AppConfig {
 	}
 ----
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
@@ -3441,7 +3441,7 @@ use Java-based configuration, you can add `@EnableSpringConfigured` to any
 ----
 	@Configuration
 	@EnableSpringConfigured
-	class AppConfig {
+	class bean.AppConfig {
 	}
 ----
 
@@ -3990,7 +3990,7 @@ which typically is done by using the `@EnableLoadTimeWeaving` annotation, as fol
 ----
 	@Configuration
 	@EnableLoadTimeWeaving
-	public class AppConfig {
+	public class bean.AppConfig {
 	}
 ----
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
@@ -3998,7 +3998,7 @@ which typically is done by using the `@EnableLoadTimeWeaving` annotation, as fol
 ----
 	@Configuration
 	@EnableLoadTimeWeaving
-	class AppConfig {
+	class bean.AppConfig {
 	}
 ----
 
@@ -4073,7 +4073,7 @@ The following example specifies a `ReflectiveLoadTimeWeaver`:
 ----
 	@Configuration
 	@EnableLoadTimeWeaving
-	public class AppConfig implements LoadTimeWeavingConfigurer {
+	public class bean.AppConfig implements LoadTimeWeavingConfigurer {
 
 		@Override
 		public LoadTimeWeaver getLoadTimeWeaver() {
@@ -4086,7 +4086,7 @@ The following example specifies a `ReflectiveLoadTimeWeaver`:
 ----
 	@Configuration
 	@EnableLoadTimeWeaving
-	class AppConfig : LoadTimeWeavingConfigurer {
+	class bean.AppConfig : LoadTimeWeavingConfigurer {
 
 		override fun getLoadTimeWeaver(): LoadTimeWeaver {
 			return ReflectiveLoadTimeWeaver()

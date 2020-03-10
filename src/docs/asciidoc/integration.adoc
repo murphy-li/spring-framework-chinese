@@ -2420,7 +2420,7 @@ your `@Configuration` classes, as the following example shows:
 ----
 	@Configuration
 	@EnableJms
-	public class AppConfig {
+	public class bean.AppConfig {
 
 		@Bean
 		public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
@@ -2477,7 +2477,7 @@ The following example shows how to do so:
 ----
 	@Configuration
 	@EnableJms
-	public class AppConfig implements JmsListenerConfigurer {
+	public class bean.AppConfig implements JmsListenerConfigurer {
 
 		@Override
 		public void configureJmsListeners(JmsListenerEndpointRegistrar registrar) {
@@ -2561,7 +2561,7 @@ annotate the payload with `@Valid` and configure the necessary validator, as the
 ----
 	@Configuration
 	@EnableJms
-	public class AppConfig implements JmsListenerConfigurer {
+	public class bean.AppConfig implements JmsListenerConfigurer {
 
 		@Override
 		public void configureJmsListeners(JmsListenerEndpointRegistrar registrar) {
@@ -2649,7 +2649,7 @@ as the following example shows:
 ----
 	@Configuration
 	@EnableJms
-	public class AppConfig {
+	public class bean.AppConfig {
 
 		@Bean
 		public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
@@ -3847,7 +3847,7 @@ as the following example shows:
 ----
 	@Configuration
 	@EnableMBeanExport
-	public class AppConfig {
+	public class bean.AppConfig {
 
 	}
 ----
@@ -6140,7 +6140,7 @@ To enable support for `@Scheduled` and `@Async` annotations, you can add `@Enabl
 	@Configuration
 	@EnableAsync
 	@EnableScheduling
-	public class AppConfig {
+	public class bean.AppConfig {
 	}
 ----
 
@@ -7304,7 +7304,7 @@ To enable caching annotations add the annotation `@EnableCaching` to one of your
 ----
 	@Configuration
 	@EnableCaching
-	public class AppConfig {
+	public class bean.AppConfig {
 	}
 ----
 

@@ -146,18 +146,26 @@ abstract class ConfigurationClassUtils {
 		// AppConfig中@Configuration标记怎么处理
 		// isConfigurationCandidate指示，只要是以下注解之一标记即可作为配置类。
 		// [org.springframework.context.annotation.Import, org.springframework.stereotype.Component, org.springframework.context.annotation.ImportResource, org.springframework.context.annotation.ComponentScan]
+		// 获得该类关于@Configuration注解的信息
 		Map<String, Object> config = metadata.getAnnotationAttributes(Configuration.class.getName());
+		// 如果被@Configuration注解，且proxyBeanMethods为默认值true，则设置beanDefinition中configClass属性为full，且该类为configClass。
+		// 写的啥？直接写TRUE.equals不就好了？
 		if (config != null && !Boolean.FALSE.equals(config.get("proxyBeanMethods"))) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
+		// 如果被@Configuration注解，但是proxyBeanMethods设置为false，
+		// 或者isConfigurationCandidate判断，如果被candidateIndicators（@Import、@Component、ImportResource、ComponentScan）注解，或者有@Bean方法
+		// 则设置beanDefinition中configClass属性为lite，且该类为configClass。
 		else if (config != null || isConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
+		// 否则该类不是配置类
 		else {
 			return false;
 		}
 
 		// It's a full or lite configuration candidate... Let's determine the order value, if any.
+		// 从metadata中获取order属性，然后设置到beanDefinition中，如果没有则为Ordered.LOWEST_PRECEDENCE
 		Integer order = getOrder(metadata);
 		if (order != null) {
 			beanDef.setAttribute(ORDER_ATTRIBUTE, order);

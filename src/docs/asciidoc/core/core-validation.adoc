@@ -1710,7 +1710,7 @@ For example, the following Java configuration registers a global `yyyyMMdd` form
 .Java
 ----
 	@Configuration
-	public class AppConfig {
+	public class bean.AppConfig {
 
 		@Bean
 		public FormattingConversionService conversionService() {
@@ -1739,7 +1739,7 @@ For example, the following Java configuration registers a global `yyyyMMdd` form
 .Kotlin
 ----
 	@Configuration
-	class AppConfig {
+	class bean.AppConfig {
 
 		@Bean
 		fun conversionService(): FormattingConversionService {
@@ -1892,7 +1892,7 @@ bean, as the following example shows:
 
 	@Configuration
 
-	public class AppConfig {
+	public class bean.AppConfig {
 
 		@Bean
 		public LocalValidatorFactoryBean validator() {
@@ -2051,7 +2051,7 @@ a custom extension, also by Hibernate Validator 4.3) into a Spring context throu
 
 	@Configuration
 
-	public class AppConfig {
+	public class bean.AppConfig {
 
 		@Bean
 		public MethodValidationPostProcessor validationPostProcessor() {
