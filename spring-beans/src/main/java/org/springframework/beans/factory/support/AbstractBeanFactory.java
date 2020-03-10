@@ -87,7 +87,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
-import printer.DebugPrinter;
+import printer.MingLoggerImpl;
 
 /**
  * Abstract base class for {@link org.springframework.beans.factory.BeanFactory}
@@ -304,7 +304,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	@Override
 	public Object getBean(String name) throws BeansException {
-		DebugPrinter.log("获得bean：" + name);
+
 		return doGetBean(name, null, null, false);
 	}
 
@@ -371,10 +371,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		Object bean;
 
 		// Eagerly check singleton cache for manually registered singletons.
-		DebugPrinter.log("首先检查单例cache");
+
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
-			DebugPrinter.log("从cache获取失败");
+
 			if (logger.isTraceEnabled()) {
 				if (isSingletonCurrentlyInCreation(beanName)) {
 					logger.trace("Returning eagerly cached instance of singleton bean '" + beanName +
@@ -2172,7 +2172,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			Object beanInstance, String name, String beanName, @Nullable RootBeanDefinition mbd) {
 
 		// Don't let calling code try to dereference the factory if the bean isn't a factory.
-		DebugPrinter.log("不要让调用代码尝试取消工厂引用，如果bean不是工厂");
+
 		if (BeanFactoryUtils.isFactoryDereference(name)) {
 			if (beanInstance instanceof NullBean) {
 				return beanInstance;

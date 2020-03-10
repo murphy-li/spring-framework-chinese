@@ -39,7 +39,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
-import printer.DebugPrinter;
+import printer.MingLoggerImpl;
 
 /**
  * Default implementation of the {@link ResourceLoader} interface.
@@ -88,7 +88,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * @see  java.lang.Thread＃getContextClassLoader（）
 	 */
 	public DefaultResourceLoader() {
-		DebugPrinter.log("设置classLoader");
+
 		this.classLoader = ClassUtils.getDefaultClassLoader();
 	}
 
@@ -137,7 +137,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 	@Override
 	@Nullable
 	public ClassLoader getClassLoader() {
-		DebugPrinter.log("获得当前对象的classLoader属性");
+
 		return (this.classLoader != null ? this.classLoader : ClassUtils.getDefaultClassLoader());
 	}
 

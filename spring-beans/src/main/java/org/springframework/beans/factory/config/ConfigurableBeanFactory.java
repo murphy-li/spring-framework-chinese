@@ -110,8 +110,8 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 * 设置此bean工厂的父级。 
 	 *  <p>请注意，父项不能更改：如果在工厂实例化时不可用，则只能在构造函数外部进行设置。 
 	 *  
-	 * @param  parentBeanFactory父BeanFactory 
-	 * @throws  IllegalStateException如果此工厂已经与父BeanFactory关联
+	 * @param  parentBeanFactory 父BeanFactory
+	 * @throws  IllegalStateException 如果此工厂已经与父BeanFactory关联
 	 * @see  #getParentBeanFactory（）
 	 */
 	void setParentBeanFactory(BeanFactory parentBeanFactory) throws IllegalStateException;
@@ -129,10 +129,10 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	/**
 	 * 设置类加载器以用于加载bean类。 
 	 * 默认值为线程上下文类加载器。 
-	 *  <p>请注意，此类加载器仅适用于尚不包含已解析的bean类的bean定义。 
-	 * 从Spring 2.0开始，默认情况下就是这种情况：Bean定义仅带有Bean类名，一旦工厂处理了Bean定义，就可以解决。 
+	 *  <p>请注意，此类加载器仅适用于尚不包含已解析的bean类的bean definition。
+	 * 从Spring 2.0开始，默认情况下就是这种情况：Bean定义仅带有Bean类名，一旦工厂处理了Bean definition，就可以解析。
 	 *  
-	 * @param  beanClassLoader要使用的类加载器，或使用{@code  null}来建议默认的类加载器
+	 * @param  beanClassLoader 要使用的类加载器，或使用{@code  null}来建议默认的类加载器
 	 */
 	void setBeanClassLoader(@Nullable ClassLoader beanClassLoader);
 
@@ -142,7 +142,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 * @see org.springframework.util.ClassUtils#forName(String, ClassLoader)
 	 */
 	/**
-	 * 返回此工厂的类加载器以加载Bean类（即使无法访问系统ClassLoader，也只能{{@@code> null}）。 
+	 * 返回此工厂的类加载器以加载Bean类（即使无法访问系统ClassLoader，也只能{@code null}）。
 	 *  
 	 * @see  org.springframework.util.ClassUtils＃forName（String，ClassLoader）
 	 */
@@ -161,7 +161,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	/**
 	 * 指定一个临时的ClassLoader以用于类型匹配。 
 	 * 缺省为none，仅使用标准bean ClassLoader。 
-	 *  <p>通常只在涉及<i>加载时编织</ i>时才指定一个临时的ClassLoader，以确保尽可能延迟地加载实际的bean类。 
+	 *  <p>通常只在涉及<i>加载时编织（load-time weaving）</ i>时才指定一个临时的ClassLoader，以确保尽可能延迟地加载实际的bean类。
 	 *  BeanFactory完成其引导阶段后，便会删除临时加载程序。 
 	 *  @自2.5起
 	 */
@@ -288,7 +288,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 * 为了线程安全，将同步对该实例的访问。 
 	 * 通常最好使用{@link  #addPropertyEditorRegistrar}代替此方法，以避免需要在自定义编辑器上进行同步。 
 	 *  
-	 * @param  requiredType属性的类型
+	 * @param  requiredType 属性的类型
 	 * @param  propertyEditorClass {@link  PropertyEditor}类进行注册
 	 */
 	void registerCustomEditor(Class<?> requiredType, Class<? extends PropertyEditor> propertyEditorClass);
@@ -301,7 +301,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	/**
 	 * 使用已在此BeanFactory中注册的自定义编辑器初始化给定的PropertyEditorRegistry。 
 	 *  
-	 * @param 注册PropertyEditorRegistry进行初始化
+	 * @param registry ropertyEditorRegistry进行初始化
 	 */
 	void copyRegisteredEditorsTo(PropertyEditorRegistry registry);
 
@@ -346,7 +346,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	/**
 	 * 为嵌入的值（例如注释属性）添加字符串解析器。 
 	 *  
-	 * @param  valueResolver字符串解析器，应用于从3.0开始的嵌入值
+	 * @param  valueResolver 字符串解析器，应用于从3.0开始的嵌入值
 	 */
 	void addEmbeddedValueResolver(StringValueResolver valueResolver);
 
@@ -370,7 +370,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	/**
 	 * 解决给定的嵌入值，例如注释属性。 
 	 *  
-	 * @param 设置要解析的值
+	 * @param value 要解析的值
 	 * @return 解析的值（可能是原始值）@3.0起
 	 */
 	@Nullable
@@ -393,7 +393,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	 * 通过实现{@link  org.springframework.core.Ordered}接口表达的任何排序语义都将被忽略。 
 	 * 请注意，自动检测到的后处理器（例如，作为ApplicationContext中的bean）将始终在以编程方式注册的后处理器之后应用。 
 	 *  
-	 * @param  beanPostProcessor要注册的后处理器
+	 * @param  beanPostProcessor 要注册的后处理器
 	 */
 	void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
 

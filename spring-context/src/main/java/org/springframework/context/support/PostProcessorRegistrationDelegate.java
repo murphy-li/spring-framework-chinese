@@ -72,6 +72,7 @@ final class PostProcessorRegistrationDelegate {
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
 		Set<String> processedBeans = new HashSet<>();
 
+		// 如果当前BeanFactory是BeanDefinitionRegistryPostProcessor的实例，则执行
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
@@ -93,19 +94,30 @@ final class PostProcessorRegistrationDelegate {
 			// uninitialized to let the bean factory post-processors apply to them!
 			// Separate between BeanDefinitionRegistryPostProcessors that implement
 			// PriorityOrdered, Ordered, and the rest.
+			/**
+			 * 不要在这里初始化factory beans：我们需要让所有常规bean都未初始化，
+			 * 以便让bean factory post-processors应用于它们！
+			 * 分离实现了PriorityOrdered、Ordered和其他的BeanDefinitionRegistryPostProcessors。
+			 * BeanDefinitionRegistryPostProcessor extends BeanFactoryPostProcessor
+			 */
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
+			// 首先执行实现了PriorityOrdered的BeanDefinitionRegistryPostProcessor，AnnotationApplicationContext类有internalConfigurationAnnotationProcessor这个处理器。
 			String[] postProcessorNames =
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
 				if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+					// 实例化了BeanDefinitionRegistryPostProcessor，然后添加到currentRegistryProcessors中
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
 					processedBeans.add(ppName);
 				}
 			}
+			// 按照beanFactory的排序接口对这些处理器进行排序
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
+			// 将获得的BeanDefinitionRegistryPostProcessor添加到registryProcessors
 			registryProcessors.addAll(currentRegistryProcessors);
+			// 扫描所有的bean然后包装成beanDefinition放进工厂中。然后导入importRegistry
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			currentRegistryProcessors.clear();
 

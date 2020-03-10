@@ -77,6 +77,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+import printer.MingLogger;
+import printer.MingLoggerImpl;
 
 /**
  * {@link org.springframework.beans.factory.config.BeanPostProcessor BeanPostProcessor}
@@ -203,6 +205,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 	 */
 	@SuppressWarnings("unchecked")
 	public AutowiredAnnotationBeanPostProcessor() {
+		mingLogger.info("实例化中");
 		this.autowiredAnnotationTypes.add(Autowired.class);
 		this.autowiredAnnotationTypes.add(Value.class);
 		try {
@@ -459,8 +462,10 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 		return (candidateConstructors.length > 0 ? candidateConstructors : null);
 	}
 
+	MingLogger mingLogger = MingLoggerImpl.getLogger(getClass());
 	@Override
 	public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) {
+		mingLogger.info("设置" + beanName + "的值，" + pvs);
 		InjectionMetadata metadata = findAutowiringMetadata(beanName, bean.getClass(), pvs);
 		try {
 			metadata.inject(bean, beanName, pvs);
@@ -493,11 +498,12 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 	/**
 	 * 直接调用任意目标实例的"本机"处理方法，解决了其所有字段和方法，这些字段和方法使用已配置的"自动装配"注释类型之一进行注释。 
 	 *  
-	 * @param  bean如果自动装配失败，则目标实例要处理
+	 * @param  bean 如果自动装配失败，则目标实例要处理
 	 * @throws  BeanCreationException 
 	 * @see  #setAutowiredAnnotationTypes（Set）
 	 */
 	public void processInjection(Object bean) throws BeanCreationException {
+		mingLogger.info("给对象" + bean +"注入值");
 		Class<?> clazz = bean.getClass();
 		InjectionMetadata metadata = findAutowiringMetadata(clazz.getName(), clazz, null);
 		try {

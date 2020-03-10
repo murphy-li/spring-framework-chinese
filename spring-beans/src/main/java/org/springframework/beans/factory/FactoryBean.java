@@ -85,9 +85,8 @@ import org.springframework.lang.Nullable;
  *  @author  Rod Johnson @author  Juergen Hoeller @2003年3月8日起
  * @param  <T> bean类型
  * @see  org.springframework.beans.factory.BeanFactory 
- * @see  org.springframework.aop。 
- *  framework.ProxyFactoryBean 
- * @see  org.springframework.jndi.JndiObjectFactoryBean
+ * @see  org.springframework.aop.framework.ProxyFactoryBean
+ * @see org.springframework.jndi.JndiObjectFactoryBean
  */
 public interface FactoryBean<T> {
 

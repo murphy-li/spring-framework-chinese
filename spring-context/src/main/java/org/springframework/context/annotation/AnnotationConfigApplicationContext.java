@@ -35,7 +35,7 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import printer.DebugPrinter;
+import printer.MingLoggerImpl;
 
 /**
  * Standalone application context, accepting <em>component classes</em> as input &mdash;
@@ -92,7 +92,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	public AnnotationConfigApplicationContext() {
 		super();
-		DebugPrinter.log("设置reader和scanner，前面super调用父类构造");
+
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
@@ -125,10 +125,10 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 		this();
-		DebugPrinter.log("注册传入的@Configuration对应的clazz");
+
 		// register(AppConfig.class); this.BeanDefinitionMap.put(beanName, beanDefinition);
 		register(componentClasses);
-		DebugPrinter.log("刷新容器");
+
 		refresh();
 	}
 
@@ -234,7 +234,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	@Override
 	public void register(Class<?>... componentClasses) {
-		DebugPrinter.log("调用reader注册");
+
 		Assert.notEmpty(componentClasses, "At least one component class must be specified");
 		this.reader.register(componentClasses);
 	}

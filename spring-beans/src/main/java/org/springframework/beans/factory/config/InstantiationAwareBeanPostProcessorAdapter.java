@@ -32,6 +32,8 @@ import java.lang.reflect.Constructor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
 import org.springframework.lang.Nullable;
+import printer.MingLogger;
+import printer.MingLoggerImpl;
 
 /**
  * Adapter that implements all methods on {@link SmartInstantiationAwareBeanPostProcessor}
@@ -57,6 +59,9 @@ import org.springframework.lang.Nullable;
  */
 public abstract class InstantiationAwareBeanPostProcessorAdapter implements SmartInstantiationAwareBeanPostProcessor {
 
+	public InstantiationAwareBeanPostProcessorAdapter(){
+		mingLogger.info("实例化中");
+	}
 	@Override
 	@Nullable
 	public Class<?> predictBeanType(Class<?> beanClass, String beanName) throws BeansException {
@@ -96,17 +101,19 @@ public abstract class InstantiationAwareBeanPostProcessorAdapter implements Smar
 	@Override
 	public PropertyValues postProcessPropertyValues(
 			PropertyValues pvs, PropertyDescriptor[] pds, Object bean, String beanName) throws BeansException {
-
 		return pvs;
 	}
+	MingLogger mingLogger = MingLoggerImpl.getLogger(getClass());
 
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+		mingLogger.info("开始初始化" + beanName + "之前");
 		return bean;
 	}
 
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+		mingLogger.info("完成初始化" + beanName + "之后");
 		return bean;
 	}
 

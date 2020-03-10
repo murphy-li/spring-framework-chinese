@@ -105,7 +105,7 @@ public class StandardAnnotationMetadata extends StandardClassMetadata implements
 	 * 为给定的类创建一个新的{@link  StandardAnnotationMetadata}包装器，并提供以{@link  org.springframework.core.annotation.AnnotationAttributes}而不是实际的{形式返回嵌套嵌套注释或注释数组的选项。 
 	 *  @link 注释}实例。 
 	 *  
-	 * @param  introspectedClass内省的类
+	 * @param  introspectedClass 内省的类
 	 * @param  nestedAnnotationsAsMap以{@link  org.springframework.core.annotation.AnnotationAttributes}的形式返回嵌套的注释和注释数组，以与基于ASM的{@link  AnnotationMetadata}实现兼容@since 3.1.1自5.2起已弃用，而采用工厂方法{@link  AnnotationMetadata＃introspect（Class）}。 
 	 * 使用{@link  #getAnnotations（）}中的{@link  MergedAnnotation＃asMap（org.springframework.core.annotation.MergedAnnotation.Adapt ...）MergedAnnotation.asMap}，而不要使用{@link  #getAnnotationAttributes（字符串）}如果{@code  nestedAnnotationsAsMap}为{@code  false}
 	 */

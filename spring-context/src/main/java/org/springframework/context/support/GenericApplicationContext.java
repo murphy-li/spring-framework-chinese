@@ -48,7 +48,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import printer.DebugPrinter;
+import printer.MingLoggerImpl;
 
 /**
  * Generic ApplicationContext implementation that holds a single internal
@@ -140,7 +140,7 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 	 */
 	public GenericApplicationContext() {
 		super();
-		DebugPrinter.log("前面super调用父类构造函数，本类构造工厂");
+
 		this.beanFactory = new DefaultListableBeanFactory();
 	}
 
@@ -366,13 +366,13 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 	 */
 	@Override
 	protected final void refreshBeanFactory() throws IllegalStateException {
-		DebugPrinter.log("刷新子类工厂");
-		DebugPrinter.log("compareAndSet refreshed 为true，否则抛异常");
+
+
 		if (!this.refreshed.compareAndSet(false, true)) {
 			throw new IllegalStateException(
 					"GenericApplicationContext does not support multiple refresh attempts: just call 'refresh' once");
 		}
-		DebugPrinter.log("为当前工厂设置序列化id");
+
 		this.beanFactory.setSerializationId(getId());
 	}
 

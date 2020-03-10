@@ -79,7 +79,7 @@ public interface AliasRegistry {
 	/**
 	 * 确定给定名称是否被定义为别名（与实际注册的组件的名称相反）。 
 	 *  
-	 * @param 命名要检查的名称
+	 * @param name 要检查的名称
 	 * @return 给定名称是否为别名
 	 */
 	boolean isAlias(String name);
@@ -92,7 +92,7 @@ public interface AliasRegistry {
 	/**
 	 * 返回给定名称的别名（如果已定义）。 
 	 *  
-	 * @param 命名要检查别名的名称
+	 * @param name 要检查别名的名称
 	 * @return 别名，如果没有则为空数组
 	 */
 	String[] getAliases(String name);

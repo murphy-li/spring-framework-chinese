@@ -70,12 +70,11 @@ import org.springframework.lang.Nullable;
  * 预加载其所有bean定义的BeanFactory实现（例如，基于XML的工厂）可以实现此接口。 
  *  <p>如果这是{@link  HierarchicalBeanFactory}，则返回值将<i>不</ i>考虑任何BeanFactory层次结构，而仅与当前工厂中定义的Bean有关。 
  * 也可以使用{@link  BeanFactoryUtils}帮助器类来考虑祖先工厂中的bean。 
- *  <p>此接口中的方法将仅遵守该工厂的bean定义。 
- * 他们将忽略通过其他方式（例如{@link  org.springframework.beans.factory.config.ConfigurableBeanFactory}的{@code  registerSingleton}方法注册的任何单例bean，但{<@code > getBeanNamesOfType}和{@code  getBeansOfType}，它们也将检查此类手动注册的单例。 
+ *  <p>此接口中的方法将仅遵守该工厂的bean definitions 。
+ * 他们将忽略通过其他方式（例如{@link  org.springframework.beans.factory.config.ConfigurableBeanFactory}的{@code  registerSingleton}方法注册的任何单例bean，但{@code getBeanNamesOfType}和{@code  getBeansOfType}，它们也将检查此类手动注册的单例。
  * 当然，BeanFactory的{@code  getBean}确实也允许透明访问此类特殊bean。 
  * 但是，在典型情况下，无论如何，所有bean都将由外部bean定义来定义，因此大多数应用程序不必担心这种区别。 
- *  <p> <b>注意：</ b>除了{@code  getBeanDefinitionCount}和{@code  containsBeanDefinition}以外，此接口中的方法并非设计用于频繁调用。 
- * 实施可能很慢。 
+ *  <p> <b>注意：</ b>除了{@code  getBeanDefinitionCount}和{@code  containsBeanDefinition}以外，此接口中的方法并非设计用于频繁调用。实现可能很慢。
  *  @author  Rod Johnson @author  Juergen Hoeller @自2001年4月16日以来
  * @see  HierarchicalBeanFactory 
  * @see  BeanFactoryUtils
@@ -95,7 +94,7 @@ public interface ListableBeanFactory extends BeanFactory {
 	 * 检查此bean工厂是否包含具有给定名称的bean定义。 
 	 *  <p>不考虑该工厂可能参与的任何层次结构，并且忽略通过bean定义以外的其他方式注册的任何singleton bean。 
 	 *  
-	 * @param  beanName如果此bean工厂包含具有给定名称的bean定义，请查找
+	 * @param  beanName 如果此bean工厂包含具有给定名称的bean定义，请查找
 	 * @return 的bean名称。 
 	 * 
 	 * @see  #containsBean
@@ -174,7 +173,7 @@ public interface ListableBeanFactory extends BeanFactory {
 	 * 在大多数实现中，结果将与{@code  getBeanNamesForType（type，true，true）}的结果相同。 
 	 * 在后端配置中，此方法返回的<p> Bean名称应始终按定义顺序</ i>返回Bean名称。 
 	 *  
-	 * @param 键入通用类型的类或接口以匹配
+	 * @param type 通用类型的类或接口以匹配
 	 * @return 与给定对象类型（包括子类）匹配的bean（或由FactoryBeans创建的对象）的名称； 
 	 * 如果没有，则为空数组@@4.2起> #isTypeMatch（String，ResolvableType）
 	 * @see  FactoryBean＃getObjectType 
@@ -226,8 +225,8 @@ public interface ListableBeanFactory extends BeanFactory {
 	 *  <p>注意：<i>不</ i>会忽略通过bean定义以外的其他方式注册的单例bean。 
 	 * 在后端配置中，此方法返回的<p> Bean名称应始终按定义顺序</ i>返回Bean名称。 
 	 *  
-	 * @param 键入通用类型的类或接口以匹配
-	 * @param  includeNonSingletons是是否也包含原型或范围内的bean还是仅包含单例（也适用于FactoryBean）。 
+	 * @param type 通用类型的类或接口以匹配
+	 * @param  includeNonSingletons 是是否也包含原型或范围内的bean还是仅包含单例（也适用于FactoryBean）。
 	 *  </ i>和<i>由FactoryBeans </ i>（或带有"factory-bean"引用的工厂方法）创建的对象进行类型检查。 
 	 * 请注意，必须急切初始化FactoryBeans以确定它们的类型：因此请注意，为此标志传递"true"将初始化FactoryBeans和"factory-bean"引用。 
 	 *  
@@ -275,7 +274,7 @@ public interface ListableBeanFactory extends BeanFactory {
 	 * 在大多数实现中，结果将与{@code  getBeanNamesForType（type，true，true）}的结果相同。 
 	 * 在后端配置中，此方法返回的<p> Bean名称应始终按定义顺序</ i>返回Bean名称。 
 	 *  
-	 * @param 输入要匹配的类或接口，或者为所有bean名称输入{@code  null} 
+	 * @param type 要匹配的类或接口，或者为所有bean名称输入{@code  null}
 	 * @return 匹配给定对象类型（包括子类）的bean（或FactoryBeans创建的对象）的名称，或者如果没有，则返回一个空数组
 	 * @see  FactoryBean＃getObjectType 
 	 * @see  BeanFactoryUtils＃beanNamesForTypeIn includedAncestors（ListableBeanFactory，Class）
@@ -325,9 +324,9 @@ public interface ListableBeanFactory extends BeanFactory {
 	 *  <p>注意：<i>不</ i>会忽略通过bean定义以外的其他方式注册的单例bean。 
 	 * 在后端配置中，此方法返回的<p> Bean名称应始终按定义顺序</ i>返回Bean名称。 
 	 *  
-	 * @param 输入要匹配的类或接口，或为所有bean名称输入{@code  null} 
-	 * @param  includeNonSingletons是否也包含原型或范围内的bean或仅包含单例（也适用于FactoryBean）
-	 * @param  allowEagerInit是否初始化由工厂bean </ i>（或带有"factory-bean"引用的工厂方法）创建的<i> lazy-init单例</ i>和<i>对象，以进行类型检查。 
+	 * @param type 要匹配的类或接口，或为所有bean名称输入{@code  null}
+	 * @param  includeNonSingletons 是否也包含原型或范围内的bean或仅包含单例（也适用于FactoryBean）
+	 * @param  allowEagerInit 是否初始化由工厂bean </ i>（或带有"factory-bean"引用的工厂方法）创建的<i> lazy-init单例</ i>和<i>对象，以进行类型检查。
 	 * 请注意，必须急切初始化FactoryBeans以确定它们的类型：因此请注意，为此标志传递"true"将初始化FactoryBeans和"factory-bean"引用。 
 	 *  
 	 * @return 匹配给定对象类型（包括子类）的bean（或由FactoryBeans创建的对象）的名称，如果没有，则返回一个空数组
@@ -377,7 +376,7 @@ public interface ListableBeanFactory extends BeanFactory {
 	 * 在大多数实现中，结果将与{@code  getBeansOfType（type，true，true）}的结果相同。 
 	 *  <p>此方法返回的Map应该始终尽可能在后端配置中按定义顺序返回<i> bean名称和相应的bean实例</ i>。 
 	 *  
-	 * @param 输入要匹配的类或接口，或者为所有具体bean输入{@code  null} 
+	 * @param type 要匹配的类或接口，或者为所有具体bean输入{@code  null}
 	 * @return 具有匹配bean的Map，其中包含bean名称作为键，并包含对应的bean实例作为值<@如果无法创建豆，则抛出throws> BeansException。 
 	 * @1.1.2起
 	 * @see  FactoryBean＃getObjectType 
@@ -430,13 +429,13 @@ public interface ListableBeanFactory extends BeanFactory {
 	 *  <p>注意：<i>不</ i>会忽略通过bean定义以外的其他方式注册的单例bean。 
 	 *  <p>此方法返回的Map应该始终尽可能在后端配置中按定义顺序返回<i> bean名称和相应的bean实例</ i>。 
 	 *  
-	 * @param 输入要匹配的类或接口，或者为所有具体bean输入{@code  null} 
-	 * @param  includeNonSingletons是否也包含原型或作用域bean或仅包含单例（也适用于FactoryBeans）
-	 * @param  allowEagerInit是否初始化由工厂bean </ i>（或带有"factory-bean"引用的工厂方法）创建的<i> lazy-init单例</ i>和<i>对象，以进行类型检查。 
+	 * @param type 要匹配的类或接口，或者为所有具体bean输入{@code  null}
+	 * @param  includeNonSingletons 是否也包含原型或作用域bean或仅包含单例（也适用于FactoryBeans）
+	 * @param  allowEagerInit 是否初始化由工厂bean </ i>（或带有"factory-bean"引用的工厂方法）创建的<i> lazy-init单例</ i>和<i>对象，以进行类型检查。
 	 * 请注意，必须急切初始化FactoryBeans以确定它们的类型：因此请注意，为此标志传递"true"将初始化FactoryBeans和"factory-bean"引用。 
 	 *  
 	 * @return 包含匹配bean的Map，包含bean名称作为键，并包含对应的bean实例作为值
-	 * @throws  BeansException如果无法创建bean 
+	 * @throws  BeansException 如果无法创建bean
 	 * @see  FactoryBean＃getObjectType 
 	 * @see  BeanFactoryUtils＃beansOfTypeInclusionAncestors （ListableBeanFactory，Class，boolean，boolean）
 	 */
@@ -458,7 +457,7 @@ public interface ListableBeanFactory extends BeanFactory {
 	 * 查找使用提供的{@link  Annotation}类型进行注释的bean的所有名称，而无需创建相应的bean实例。 
 	 *  <p>请注意，此方法考虑由FactoryBeans创建的对象，这意味着将初始化FactoryBeans以确定其对象类型。 
 	 *  
-	 * @param 注解键入要查找的注解类型（在指定bean的类，接口或工厂方法级别）
+	 * @param annotationType 要查找的注解类型（在指定bean的类，接口或工厂方法级别）
 	 * @return 所有匹配的bean的名称@自4.0起
 	 * @see  #findAnnotationOnBean
 	 */
@@ -481,9 +480,9 @@ public interface ListableBeanFactory extends BeanFactory {
 	 * 查找所有使用提供的{@link  Annotation}类型进行注释的bean，并返回具有相应bean实例的bean名称的Map。 
 	 *  <p>请注意，此方法考虑由FactoryBeans创建的对象，这意味着将初始化FactoryBeans以确定其对象类型。 
 	 *  
-	 * @param 注解键入要查找的注解类型（在指定bean的类，接口或工厂方法级别）
+	 * @param annotationType 要查找的注解类型（在指定bean的类，接口或工厂方法级别）
 	 * @return 包含匹配bean的Map，其中包含bean名称作为键，并包含对应的bean实例作为值
-	 * @throws  BeansException如果从3.0开始无法创建bean @
+	 * @throws  BeansException 如果从3.0开始无法创建bean @
 	 * @see> #findAnnotationOnBean
 	 */
 	Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType) throws BeansException;
@@ -502,10 +501,10 @@ public interface ListableBeanFactory extends BeanFactory {
 	 * @see #getBeansWithAnnotation
 	 */
 	/**
-	 * 在指定的bean上找到{@code 注解类型}的{@link 注解}，遍历其接口和超类（如果在给定类本身上找不到注解），并检查bean的factory方法（如果任何）。 
+	 * 在指定的bean上找到{@code Annotation}的{@link annotationType}，遍历其接口和超类（如果在给定类本身上找不到注解），并检查bean的factory方法（如果任何）。
 	 *  
-	 * @param  beanName要在
-	 * @param 注解上查找注释的bean的名称键入要查找的注释的类型（在指定bean的类，接口或工厂方法级别）
+	 * @param  beanName 要在注解上查找注释的bean的名称
+	 * @param annotationType 要查找的注释的类型（在指定bean的类，接口或工厂方法级别）
 	 * @return 给定的注释如果找到，则键入，否则为{@code  null}，否则为{
 	 * @throws> NoSuchBeanDefinitionException，如果没有给定名称的bean @since 3.0 
 	 * @see  #getBeanNamesForAnnotation 

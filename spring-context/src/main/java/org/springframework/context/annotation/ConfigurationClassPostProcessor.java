@@ -333,9 +333,11 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 * 
 	 */
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
+		// 存储配置类定义的临时列表
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
+		// 扫描发现配置类
 		for (String beanName : candidateNames) {
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
 			if (beanDef.getAttribute(ConfigurationClassUtils.CONFIGURATION_CLASS_ATTRIBUTE) != null) {
@@ -353,6 +355,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			return;
 		}
 
+		// 对配置类列表按照前面检查时
+		// else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory))
+		// 分配的order进行排序
 		// Sort by previously determined @Order value, if applicable
 		configCandidates.sort((bd1, bd2) -> {
 			int i1 = ConfigurationClassUtils.getOrder(bd1.getBeanDefinition());
@@ -361,6 +366,12 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		});
 
 		// Detect any custom bean name generation strategy supplied through the enclosing application context
+		// 探测通过封闭的应用程序上下文提供的任何自定义bean名称生成策略，重点中的重点，也就是扫描bean定义
+		// 探测通过封闭的应用程序上下文提供的任何自定义bean名称生成策略，重点中的重点，也就是扫描bean定义
+		// 探测通过封闭的应用程序上下文提供的任何自定义bean名称生成策略，重点中的重点，也就是扫描bean定义
+		// 探测通过封闭的应用程序上下文提供的任何自定义bean名称生成策略，重点中的重点，也就是扫描bean定义
+		// 探测通过封闭的应用程序上下文提供的任何自定义bean名称生成策略，重点中的重点，也就是扫描bean定义
+		// 探测通过封闭的应用程序上下文提供的任何自定义bean名称生成策略，重点中的重点，也就是扫描bean定义
 		SingletonBeanRegistry sbr = null;
 		if (registry instanceof SingletonBeanRegistry) {
 			sbr = (SingletonBeanRegistry) registry;
@@ -379,6 +390,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 
 		// Parse each @Configuration class
+		// 解析所有的@ConfigurationClass。
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment,
 				this.resourceLoader, this.componentScanBeanNameGenerator, registry);
@@ -390,7 +402,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			parser.validate();
 
 			Set<ConfigurationClass> configClasses = new LinkedHashSet<>(parser.getConfigurationClasses());
-			configClasses.removeAll(alreadyParsed);
+			configClasses.removeAll(alreadyParsed); // 这些的啥，咋看不懂啊
 
 			// Read the model and create bean definitions based on its content
 			if (this.reader == null) {
@@ -424,6 +436,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		while (!candidates.isEmpty());
 
 		// Register the ImportRegistry as a bean in order to support ImportAware @Configuration classes
+		// 在注册中心注册ImportRegistry，和@Import无关，那为啥子叫做ImportRegister呢？
 		if (sbr != null && !sbr.containsSingleton(IMPORT_REGISTRY_BEAN_NAME)) {
 			sbr.registerSingleton(IMPORT_REGISTRY_BEAN_NAME, parser.getImportRegistry());
 		}

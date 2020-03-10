@@ -105,8 +105,8 @@ class ConditionEvaluator {
 	 * 根据{@code  @Conditional}注解确定是否应跳过项目。 
 	 *  
 	 * @param 元数据，元数据
-	 * @param ，阶段调用（
-	 * @return ）阶段（如果应跳过该项目）
+	 * @param phase 调用的阶段
+	 * @return 是否应跳过该项目
 	 */
 	public boolean shouldSkip(@Nullable AnnotatedTypeMetadata metadata, @Nullable ConfigurationPhase phase) {
 		if (metadata == null || !metadata.isAnnotated(Conditional.class.getName())) {

@@ -68,6 +68,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import printer.MingLogger;
+import printer.MingLoggerImpl;
 
 /**
  * {@link org.springframework.beans.factory.config.BeanPostProcessor} that
@@ -368,7 +370,6 @@ public class ScriptFactoryPostProcessor extends InstantiationAwareBeanPostProces
 	public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) {
 		return pvs;
 	}
-
 	@Override
 	public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) {
 		// We only apply special treatment to ScriptFactory implementations here.

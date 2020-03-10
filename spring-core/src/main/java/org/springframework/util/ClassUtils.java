@@ -51,7 +51,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 
 import org.springframework.lang.Nullable;
-import printer.DebugPrinter;
+import printer.MingLoggerImpl;
 
 /**
  * Miscellaneous {@code java.lang.Class} utility methods.
@@ -275,7 +275,7 @@ public abstract class ClassUtils {
 	 */
 	@Nullable
 	public static ClassLoader getDefaultClassLoader() {
-		DebugPrinter.log("使用ClassUtils获得ClassLoader");
+
 		ClassLoader cl = null;
 		try {
 			cl = Thread.currentThread().getContextClassLoader();

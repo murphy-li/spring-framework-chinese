@@ -72,6 +72,11 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	private final Map<String, String> aliasMap = new ConcurrentHashMap<>(16);
 
 
+	/**
+	 * 给name注册alias
+	 * @param name bean的name
+	 * @param alias bean的alias
+	 */
 	@Override
 	public void registerAlias(String name, String alias) {
 		Assert.hasText(name, "'name' must not be empty");
@@ -128,12 +133,27 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	 * @since 4.2.1
 	 */
 	/**
-	 * 确定给定名称是否已注册给定别名。 
-	 *  
-	 * @param 命名要检查的名称
-	 * @param 别名查找@since 4.2.1起的别名
+	 * 确定给定名称是否已注册给定别名。
+	 * @param name 要检查的名称
+	 * @param alias 要查找的别名@since 4.2.1起的别名
 	 */
 	public boolean hasAlias(String name, String alias) {
+		//for (Map.Entry<String, String> entry : this.aliasMap.entrySet()) {
+		//            String registeredName = entry.getValue();
+		//            /**
+		//            * 禁止的两种情况：
+		//            *  1、map容器(carA:car)，指定(carA,car)，相同映射
+		//            *  2、map容器(carA:car,carC:carA)，指定(carC,car) 循环映射
+		//            */
+		//            if (registeredName.equals(name)) {
+		//                String registeredAlias = entry.getKey();
+		//                if (registeredAlias.equals(alias) || hasAlias(registeredAlias, alias)) {
+		//                    return true;
+		//                }
+		//            }
+		//        }
+		//        return false;
+		//
 		String registeredName = this.aliasMap.get(alias);
 		return ObjectUtils.nullSafeEquals(registeredName, name) || (registeredName != null
 				&& hasAlias(name, registeredName));
@@ -171,8 +191,8 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	/**
 	 * 传递检索给定名称的所有别名。 
 	 *  
-	 * @param 命名目标名称以查找
-	 * @param 的别名，并生成别名列表
+	 * @param name 查找的目标名称
+	 * @param result 查找的别名列表
 	 */
 	private void retrieveAliases(String name, List<String> result) {
 		this.aliasMap.forEach((alias, registeredName) -> {
@@ -194,7 +214,7 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	 * 解析所有别名目标名称和在此注册表中注册的别名，将给定的{@link  StringValueResolver}应用于它们。 
 	 *  <p>例如，值解析器可以解析目标Bean名称甚至别名中的占位符。 
 	 *  
-	 * @param  valueResolver要应用的StringValueResolver
+	 * @param  valueResolver 要应用的StringValueResolver
 	 */
 	public void resolveAliases(StringValueResolver valueResolver) {
 		Assert.notNull(valueResolver, "StringValueResolver must not be null");
@@ -242,8 +262,8 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	/**
 	 * 检查给定名称是否已经作为另一个方向的别名指向给定别名，是否预先捕获了循环引用并引发了相应的IllegalStateException。 
 	 *  
-	 * @param 命名候选名称
-	 * @param 别名候选别名
+	 * @param name 候选名称
+	 * @param name 候选别名
 	 * @see  #registerAlias 
 	 * @see  #hasAlias
 	 */
@@ -263,7 +283,7 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	/**
 	 * 确定原始名称，将别名解析为规范名称。 
 	 *  
-	 * @param 命名用户指定的名称
+	 * @param name 用户指定的名称
 	 * @return 转换后的名称
 	 */
 	public String canonicalName(String name) {

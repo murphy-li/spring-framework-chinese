@@ -114,6 +114,7 @@ abstract class ConfigurationClassUtils {
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
+			// TODO， 这些的啥？？？ 就是检查一下类名和metaData的类名是否一样？？？
 			metadata = ((AnnotatedBeanDefinition) beanDef).getMetadata();
 		}
 		else if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
@@ -142,6 +143,9 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
+		// AppConfig中@Configuration标记怎么处理
+		// isConfigurationCandidate指示，只要是以下注解之一标记即可作为配置类。
+		// [org.springframework.context.annotation.Import, org.springframework.stereotype.Component, org.springframework.context.annotation.ImportResource, org.springframework.context.annotation.ComponentScan]
 		Map<String, Object> config = metadata.getAnnotationAttributes(Configuration.class.getName());
 		if (config != null && !Boolean.FALSE.equals(config.get("proxyBeanMethods"))) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
