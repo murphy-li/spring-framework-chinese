@@ -26,7 +26,7 @@ import printer.MingLogger;
  */
 @Configuration
 @ComponentScan("bean")
-@Import(MingLogger.class)
+//@Import(MingLogger.class)
 public class AppConfig {
 	@Bean
 	Object java(){

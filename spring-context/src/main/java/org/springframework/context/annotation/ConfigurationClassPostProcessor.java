@@ -320,7 +320,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			processConfigBeanDefinitions((BeanDefinitionRegistry) beanFactory);
 		}
 
+		// 增强标记为full的beanDefinition（CGLIB代理），即有@Configuration注解，然后proxyMethod=true的类
 		enhanceConfigurationClasses(beanFactory);
+		// 添加 ImportAwareBeanPostProcessor 后置处理器
 		beanFactory.addBeanPostProcessor(new ImportAwareBeanPostProcessor(beanFactory));
 	}
 
@@ -416,12 +418,33 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		// 已解析到的配置类
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
-			// 对所有候选列表中的配置类进行解析，然后将解析结果包装成beanDefinition添加到注册中心（工厂）中
+			/**
+			 * 对所有候选列表中的配置类进行解析，然后将解析结果包装成beanDefinition添加到注册中心（工厂）中
+			 * 1. 处理configurationClasses是否已存在当前类
+			 * 2. 循环处理configClass
+			 * 		1. 处理@Component
+			 * 		2. 处理@PropertySource
+			 * 		3. 处理@ComponentScans、@ComponentScan，然后扫描，扫描结果会添加到注册中心里面，因为componentScanParser持有注册中心引用。
+			 * 		扫描结果如果发现configClass，调到上一阶段（循环处理configClass），然后递归解析
+			 * 		4. 处理@Import
+			 * 		5. 处理@ImportResource
+			 * 		6. 处理当前传入类的@Bean方法，@Bean方法会添加到configClass中
+			 * 		7. 处理接口默认方法
+			 * 		8. 处理超类，如果超类不认识，则返回这里继续循环，如果认识超类，则返回null结束循环
+			 * 		9. 然后将当前类添加到configurationClasses中
+			 * 		注：因为@ComponentScan会将扫描到的configClass递归调用parse，所以扫描到的其他@Compoent类也会被添加到configurationClasses中。
+			 */
 			parser.parse(candidates);
-			// 对解析结果包括本身的所有类进行验证，
-			// 如果该类不是@Configuration注解的，则验证通过，
-			// 如果是@Configuration注解的，验证final和proxyMethod
-			// 如果可代理，验证@Bean的非静态方法是否都重写了（@Override）。instance @Bean methods within @Configuration classes must be overridable to accommodate CGLIB
+			//
+			//
+			//
+			//
+			/**
+			 * 对解析结果以及被解析类（即configClasses）进行验证：
+			 * 	1. 如果该类不是@Configuration注解的，则验证通过
+			 * 	2. 如果是@Configuration注解的，验证final和proxyMethod
+			 * 	如果可代理，验证@Bean的非静态方法是否都重写了（@Override）。instance @Bean methods within @Configuration classes must be overridable to accommodate CGLIB
+			 */
 			parser.validate();
 
 			// 获得解析结果中的配置类
@@ -435,16 +458,21 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 						registry, this.sourceExtractor, this.resourceLoader, this.environment,
 						this.importBeanNameGenerator, parser.getImportRegistry());
 			}
-			// 从解析结果中加载beanDefinition,xxxxxxxxx错了
+			// 从解析结果中加载beanDefinition，添加了接口、"java"的beanDefinition
 			this.reader.loadBeanDefinitions(configClasses);
 			// 将解析结果加到已处理集合中
 			alreadyParsed.addAll(configClasses);
-
+			// 候选列表清空
 			candidates.clear();
-			// TODO 如果？？？？
+
+			// 检查所有的新发现的beanDefinition，如果满足configClass的要求，则将其加到待解析候选列表中。
+			// 如果发现了新的beanDefinition
 			if (registry.getBeanDefinitionCount() > candidateNames.length) {
+				// 将所有的beanDefinition取出，置为新的候选列表
 				String[] newCandidateNames = registry.getBeanDefinitionNames();
+				// 取出旧的候选列表
 				Set<String> oldCandidateNames = new HashSet<>(Arrays.asList(candidateNames));
+				// 取出已解析的类名
 				Set<String> alreadyParsedClasses = new HashSet<>();
 				for (ConfigurationClass configurationClass : alreadyParsed) {
 					alreadyParsedClasses.add(configurationClass.getMetadata().getClassName());

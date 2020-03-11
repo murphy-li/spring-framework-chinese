@@ -542,6 +542,12 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		try {
 			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
+			// packageSearchPath 是 扫描的包的路径
+			// 重要以下代码是真正的扫描代码
+			// 重要以下代码是真正的扫描代码
+			// 重要以下代码是真正的扫描代码
+			// 重要以下代码是真正的扫描代码
+			// 重要以下代码是真正的扫描代码
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
 			boolean traceEnabled = logger.isTraceEnabled();
 			boolean debugEnabled = logger.isDebugEnabled();
@@ -551,8 +557,10 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				}
 				if (resource.isReadable()) {
 					try {
+						// 获得metadata
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
 						if (isCandidateComponent(metadataReader)) {
+							// 包装成beanDefinition
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setResource(resource);
 							sbd.setSource(resource);
@@ -560,6 +568,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 								if (debugEnabled) {
 									logger.debug("Identified candidate component class: " + resource);
 								}
+								// 将当前beanDefinition添加到候选集合中
 								candidates.add(sbd);
 							}
 							else {

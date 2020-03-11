@@ -186,7 +186,10 @@ class ConfigurationClassParser {
 		this.conditionEvaluator = new ConditionEvaluator(registry, environment, resourceLoader);
 	}
 
-
+	/**
+	 * 遍历给定的Set<BeanDefinitionHolder>，一一解析
+	 * @param configCandidates
+	 */
 	public void parse(Set<BeanDefinitionHolder> configCandidates) {
 		for (BeanDefinitionHolder holder : configCandidates) {
 			BeanDefinition bd = holder.getBeanDefinition();
@@ -224,6 +227,7 @@ class ConfigurationClassParser {
 	}
 
 	protected final void parse(AnnotationMetadata metadata, String beanName) throws IOException {
+		// ConfigurationClass 只需要metadata和beanName就能构造，通过metadata可以获得DescriptiveResource
 		processConfigurationClass(new ConfigurationClass(metadata, beanName), DEFAULT_EXCLUSION_FILTER);
 	}
 
@@ -248,37 +252,59 @@ class ConfigurationClassParser {
 
 
 	protected void processConfigurationClass(ConfigurationClass configClass, Predicate<String> filter) throws IOException {
+		// 判断条件
 		if (this.conditionEvaluator.shouldSkip(configClass.getMetadata(), ConfigurationPhase.PARSE_CONFIGURATION)) {
 			return;
 		}
 
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
+		// 如果在配置类中已经存在这个类
 		if (existingClass != null) {
+			// 判断是否是@Import进来的
 			if (configClass.isImported()) {
+				// 如果是@Import进来的
 				if (existingClass.isImported()) {
+					// 就合并两个？？？？
 					existingClass.mergeImportedBy(configClass);
 				}
 				// Otherwise ignore new imported config class; existing non-imported class overrides it.
+				// 否则忽略新导入的配置类；现有的非导入类将重写它。
 				return;
 			}
 			else {
 				// Explicit bean definition found, probably replacing an import.
 				// Let's remove the old one and go with the new one.
+				// 找到显式bean定义，可能会替换导入。我们把旧的换成新的吧。
 				this.configurationClasses.remove(configClass);
-				this.knownSuperclasses.values().removeIf(configClass::equals);
+				this.knownSuperclasses.values().removeIf(new Predicate<ConfigurationClass>() {
+					@Override
+					public boolean test(ConfigurationClass other) {
+						return configClass.equals(other);
+					}
+				});
 			}
 		}
 
 		// Recursively process the configuration class and its superclass hierarchy.
+		// 递归处理配置类及其超类层次结构
+
+		// 从configClass获得sourceClass
 		SourceClass sourceClass = asSourceClass(configClass, filter);
 		do {
+			// 1. 处理@Component
+			// 2. 处理@PropertySource
+			// 3. 处理@ComponentScans、@ComponentScan，然后扫描，扫描结果如果发现configClass，然后递归解析
+			// 4. 处理@Import
+			// 5. 处理@ImportResource
+			// 6. 处理当前传入类的@Bean方法，@Bean方法会添加到configClass中
+			// 7. 处理接口默认方法
+			// 8. 处理超类，如果超类不认识，则返回这里继续循环，如果认识超类，则返回null结束循环
 			sourceClass = doProcessConfigurationClass(configClass, sourceClass, filter);
 		}
 		while (sourceClass != null);
 
-		// 所有扫描到的Bean对应的类在这里添加
-		// 所有扫描到的Bean对应的类在这里添加
-		// 所有扫描到的Bean对应的类在这里添加
+		// 然后将当前类添加到configurationClasses中
+		// 注：因为@ComponentScan会将扫描到的configClass递归调用parse，所以扫描到的其他@Compoent类也会被添加到configurationClasses中。
 		this.configurationClasses.put(configClass, configClass);
 	}
 
@@ -302,7 +328,7 @@ class ConfigurationClassParser {
 	protected final SourceClass doProcessConfigurationClass(
 			ConfigurationClass configClass, SourceClass sourceClass, Predicate<String> filter)
 			throws IOException {
-		// 如果给定类是@Component注解的
+		// 如果给定类是@Component注解的，则处理@Compoent
 		if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
 			// Recursively process any member (nested) classes first
 			processMemberClasses(configClass, sourceClass, filter);
@@ -327,11 +353,13 @@ class ConfigurationClassParser {
 		if (!componentScans.isEmpty() &&
 				!this.conditionEvaluator.shouldSkip(sourceClass.getMetadata(), ConfigurationPhase.REGISTER_BEAN)) {
 			for (AnnotationAttributes componentScan : componentScans) {
-				// 处理@ComponentScan注解，即扫描
+				// 处理@ComponentScan注解，即扫描,扫描在这里啊！！！！！！！！
+				// 扫描结果会添加到注册中心里面，因为componentScanParser持有注册中心引用
 				// The config class is annotated with @ComponentScan -> perform the scan immediately
 				Set<BeanDefinitionHolder> scannedBeanDefinitions =
 						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
 				// Check the set of scanned definitions for any further config classes and parse recursively if needed
+				// 检查扫描到的beanDefinition是否为configClass，如果是则递归解析
 				for (BeanDefinitionHolder holder : scannedBeanDefinitions) {
 					BeanDefinition bdCand = holder.getBeanDefinition().getOriginatingBeanDefinition();
 					if (bdCand == null) {
@@ -362,26 +390,32 @@ class ConfigurationClassParser {
 		}
 
 		// Process individual @Bean methods
+		// 处理当前传入类的@Bean方法
 		Set<MethodMetadata> beanMethods = retrieveBeanMethodMetadata(sourceClass);
 		for (MethodMetadata methodMetadata : beanMethods) {
 			configClass.addBeanMethod(new BeanMethod(methodMetadata, configClass));
 		}
 
 		// Process default methods on interfaces
+		// 处理接口的默认方法
 		processInterfaces(configClass, sourceClass);
 
 		// Process superclass, if any
+		// 处理传入类的超类
 		if (sourceClass.getMetadata().hasSuperClass()) {
 			String superclass = sourceClass.getMetadata().getSuperClassName();
 			if (superclass != null && !superclass.startsWith("java") &&
 					!this.knownSuperclasses.containsKey(superclass)) {
+				// 将超类添加到已知类中
 				this.knownSuperclasses.put(superclass, configClass);
 				// Superclass found, return its annotation metadata and recurse
+				// 返回超类
 				return sourceClass.getSuperClass();
 			}
 		}
 
 		// No superclass -> processing is complete
+		// 没有超类，则处理完成
 		return null;
 	}
 
