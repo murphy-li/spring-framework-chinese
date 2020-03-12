@@ -307,7 +307,7 @@ final class PostProcessorRegistrationDelegate {
 		//	注册实现了Ordered的BeanPostProcessor到beanFactory中
 		registerBeanPostProcessors(beanFactory, orderedPostProcessors);
 
-		// Now, register all regular BeanPostProcessors. 执行普通的BeanPostProcessor，例如用户自定义的BeanPostProcessor
+		// Now, register all regular BeanPostProcessors. 注册普通的BeanPostProcessor，例如用户自定义的BeanPostProcessor
 		List<BeanPostProcessor> nonOrderedPostProcessors = new ArrayList<>(nonOrderedPostProcessorNames.size());
 		for (String ppName : nonOrderedPostProcessorNames) {
 			BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);

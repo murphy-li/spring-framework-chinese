@@ -359,7 +359,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @param 命名要检索的Bean的名称
 	 * @param  requiredType键入要检索的@
 	 * @param> args必需的bean类型，使用显式参数创建Bean实例时要使用的args参数（仅在创建新实例时应用相对于检索现有实例）
-	 * @param  typeCheckOnly是否获取实例用于类型检查而非实际使用
+	 * @param  typeCheckOnly 是否获取实例用于类型检查而非实际使用
 	 * @return  Bean的实例
 	 * @throws  BeansException（如果无法创建Bean）
 	 */
@@ -371,7 +371,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		Object bean;
 
 		// Eagerly check singleton cache for manually registered singletons.
-
+		// 急切地检查单例缓存中是否有手动注册的单例
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
 
@@ -395,6 +395,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			// Check if bean definition exists in this factory.
+			// 检查beanDefinition是否在父容器中
 			BeanFactory parentBeanFactory = getParentBeanFactory();
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
 				// Not found -> check parent.
@@ -416,7 +417,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 			}
 
+			// typeCheckOnly 用于确认当前获取是否为检查类型而非使用，为false表示需要实际使用，为true表示只是为了类型检查
 			if (!typeCheckOnly) {
+				// 将bean添加到已创建的集合中，从原有集合中移除
 				markBeanAsCreated(beanName);
 			}
 
@@ -425,6 +428,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				checkMergedBeanDefinition(mbd, beanName, args);
 
 				// Guarantee initialization of beans that the current bean depends on.
+				// 检查是否有dependsOn，这里可能涉及到循环依赖之类的问题。
+				// 检查是否有dependsOn，这里可能涉及到循环依赖之类的问题。
+				// 检查是否有dependsOn，这里可能涉及到循环依赖之类的问题。
+				// 检查是否有dependsOn，这里可能涉及到循环依赖之类的问题。
+				// 检查是否有dependsOn，这里可能涉及到循环依赖之类的问题。
 				String[] dependsOn = mbd.getDependsOn();
 				if (dependsOn != null) {
 					for (String dep : dependsOn) {
@@ -444,6 +452,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 
 				// Create bean instance.
+				// 真正创建实例
 				if (mbd.isSingleton()) {
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
@@ -1443,7 +1452,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @param 通过BeanWrapper进行初始化
 	 */
 	protected void initBeanWrapper(BeanWrapper bw) {
+		// 设置beanWrapper的ConversionService对象
 		bw.setConversionService(getConversionService());
+		// 注册自定义的Editors
 		registerCustomEditors(bw);
 	}
 
@@ -2172,7 +2183,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			Object beanInstance, String name, String beanName, @Nullable RootBeanDefinition mbd) {
 
 		// Don't let calling code try to dereference the factory if the bean isn't a factory.
-
+		// 如果bean不是工厂，不要让调用代码试图取消对工厂的引用。???? 这写的啥
 		if (BeanFactoryUtils.isFactoryDereference(name)) {
 			if (beanInstance instanceof NullBean) {
 				return beanInstance;
@@ -2189,6 +2200,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		// Now we have the bean instance, which may be a normal bean or a FactoryBean.
 		// If it's a FactoryBean, we use it to create a bean instance, unless the
 		// caller actually wants a reference to the factory.
+		/**
+		 * 现在我们有了bean实例，它可能是一个普通的bean或者一个FactoryBean，
+		 * 如果它是一个FactoryBean，我们就用它来创建一个bean实例，除非调用方真正想要一个对工厂的引用。
+		 */
 		if (!(beanInstance instanceof FactoryBean)) {
 			return beanInstance;
 		}
